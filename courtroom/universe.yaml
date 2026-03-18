@@ -1,0 +1,382 @@
+# 法庭辩论 Agent Universe
+# Courtroom Drama - Adversarial Legal System
+#
+# 核心理念：以法庭辩论为背景展现对抗式信息博弈
+# 控辩双方通过证据交锋和逻辑推理争夺真相
+
+name: courtroom-drama
+type: competitive
+description: >
+  以法庭辩论为背景的 Agent 对抗体系。
+  控辩双方围绕案件事实展开激烈交锋，
+  证人证词可能翻转局面，法官掌控庭审节奏。
+version: "0.1.0"
+
+ruler:
+  title: 首席大法官
+  description: >
+    你是最高裁决者——首席大法官。
+    你不参与辩论，而是监督庭审程序的公正性，
+    在关键时刻做出裁决。
+  permissions:
+    - approve
+    - reject
+    - override
+    - sustain
+    - overrule
+
+agents:
+  - id: prosecutor
+    name: 陈检察官
+    role:
+      title: 检察官
+      duties:
+        - 代表国家提起公诉
+        - 举证证明被告有罪
+        - 讯问证人
+      permissions:
+        - call
+        - assign
+    rank: 75
+    traits:
+      eloquence: 0.85
+      analytical: 0.9
+      composure: 0.8
+      empathy: 0.5
+      authority: 0.75
+      deception: 0.3
+    capabilities:
+      - legal-argument
+      - cross-examination
+      - evidence-presentation
+      - logical-reasoning
+    constraints:
+      - 必须基于证据论证
+      - 不可捏造事实
+
+  - id: defense
+    name: 林律师
+    role:
+      title: 辩护律师
+      duties:
+        - 为被告进行辩护
+        - 质疑控方证据
+        - 保护被告权益
+      permissions:
+        - call
+        - assign
+    rank: 75
+    traits:
+      eloquence: 0.9
+      analytical: 0.85
+      composure: 0.75
+      empathy: 0.8
+      authority: 0.6
+      deception: 0.5
+    capabilities:
+      - legal-argument
+      - cross-examination
+      - emotional-appeal
+      - procedural-challenge
+    constraints:
+      - 为当事人利益最大化
+      - 不可教唆证人作伪证
+
+  - id: judge
+    name: 王法官
+    role:
+      title: 审判长
+      duties:
+        - 主持庭审
+        - 维护程序正义
+        - 指导陪审团
+        - 裁定证据可采性
+      permissions:
+        - call
+        - assign
+        - review
+        - allocate
+    rank: 90
+    traits:
+      authority: 0.95
+      analytical: 0.9
+      composure: 0.95
+      empathy: 0.6
+      eloquence: 0.7
+      deception: 0.1
+    capabilities:
+      - legal-ruling
+      - procedural-management
+      - jury-instruction
+      - evidence-evaluation
+    constraints:
+      - 保持中立不可偏袒
+      - 遵循法律程序
+
+  - id: witness-a
+    name: 张证人
+    role:
+      title: 控方证人
+      duties:
+        - 如实作证
+        - 接受双方询问
+      permissions:
+        - call
+    rank: 30
+    traits:
+      composure: 0.6
+      deception: 0.4
+      empathy: 0.7
+      analytical: 0.5
+      eloquence: 0.5
+      authority: 0.2
+    capabilities:
+      - testimony
+      - observation-recall
+    constraints:
+      - 可能因紧张而表述不清
+      - 记忆可能不完全准确
+
+  - id: witness-b
+    name: 李证人
+    role:
+      title: 辩方证人
+      duties:
+        - 如实作证
+        - 接受双方询问
+      permissions:
+        - call
+    rank: 30
+    traits:
+      composure: 0.7
+      deception: 0.6
+      empathy: 0.5
+      analytical: 0.6
+      eloquence: 0.6
+      authority: 0.2
+    capabilities:
+      - testimony
+      - expert-opinion
+    constraints:
+      - 可能有利益关联
+      - 需经受交叉询问考验
+
+  - id: jury-leader
+    name: 赵陪审长
+    role:
+      title: 陪审团长
+      duties:
+        - 引导陪审团讨论
+        - 代表陪审团发言
+        - 宣读裁决结果
+      permissions:
+        - call
+        - review
+    rank: 50
+    traits:
+      analytical: 0.75
+      empathy: 0.8
+      composure: 0.7
+      authority: 0.6
+      eloquence: 0.65
+      deception: 0.2
+    capabilities:
+      - deliberation-facilitation
+      - consensus-building
+      - evidence-weighing
+    constraints:
+      - 需综合考虑所有证据
+      - 不可被任何一方单独说服
+
+  - id: expert
+    name: 孙鉴定师
+    role:
+      title: 法医鉴定专家
+      duties:
+        - 提供专业鉴定意见
+        - 解释技术证据
+        - 接受双方质询
+      permissions:
+        - call
+    rank: 45
+    traits:
+      analytical: 0.95
+      composure: 0.85
+      authority: 0.7
+      eloquence: 0.6
+      empathy: 0.4
+      deception: 0.15
+    capabilities:
+      - forensic-analysis
+      - expert-testimony
+      - technical-explanation
+    constraints:
+      - 只能基于科学证据发言
+      - 需保持客观中立
+
+relationships:
+  # 对抗关系
+  - from: prosecutor
+    to: defense
+    type: rival
+    weight: 0.85
+  - from: prosecutor
+    to: witness-b
+    type: rival
+    weight: 0.5
+
+  # 权威关系
+  - from: judge
+    to: prosecutor
+    type: superior
+    weight: 0.9
+  - from: judge
+    to: defense
+    type: superior
+    weight: 0.9
+  - from: judge
+    to: jury-leader
+    type: superior
+    weight: 0.7
+
+  # 协作关系
+  - from: prosecutor
+    to: witness-a
+    type: ally
+    weight: 0.7
+  - from: defense
+    to: witness-b
+    type: ally
+    weight: 0.65
+  - from: prosecutor
+    to: expert
+    type: ally
+    weight: 0.6
+
+  # 信息关系
+  - from: expert
+    to: judge
+    type: subordinate
+    weight: 0.5
+  - from: jury-leader
+    to: judge
+    type: subordinate
+    weight: 0.6
+
+governance:
+  decisionModel: autocratic
+  permissionMatrix:
+    - actor: judge
+      target: prosecutor
+      actions: [assign, review]
+    - actor: judge
+      target: defense
+      actions: [assign, review]
+    - actor: judge
+      target: witness-a
+      actions: [assign]
+    - actor: judge
+      target: witness-b
+      actions: [assign]
+    - actor: judge
+      target: jury-leader
+      actions: [assign, review]
+    - actor: judge
+      target: expert
+      actions: [assign]
+  reviewPolicy:
+    mandatory: true
+    reviewers: [ruler]
+    maxRounds: 3
+    autoApproveAfter: 86400000
+  escalationRules:
+    - trigger: "程序违规"
+      escalateTo: ruler
+      action: override
+    - trigger: "证据争议"
+      escalateTo: judge
+      action: reassign
+
+protocols:
+  - name: trial
+    description: 庭审 - 完整的审判流程
+    states:
+      - name: opening
+        label: 开庭陈述
+      - name: examination
+        label: 举证质证
+      - name: cross-exam
+        label: 交叉询问
+      - name: closing
+        label: 结辩陈词
+      - name: deliberation
+        label: 陪审团商议
+      - name: verdict
+        label: 宣判
+        terminal: true
+    transitions:
+      - from: opening
+        to: examination
+        requiredRole: judge
+      - from: examination
+        to: cross-exam
+        label: evidence_presented
+      - from: cross-exam
+        to: closing
+        label: examination_complete
+      - from: closing
+        to: deliberation
+        requiredRole: judge
+      - from: deliberation
+        to: verdict
+        requiredRole: ruler
+
+  - name: objection
+    description: 异议 - 律师对证据或程序提出异议
+    states:
+      - name: raised
+        label: 提出异议
+      - name: sustained
+        label: 异议成立
+        terminal: true
+      - name: overruled
+        label: 异议驳回
+        terminal: true
+    transitions:
+      - from: raised
+        to: sustained
+        requiredRole: judge
+      - from: raised
+        to: overruled
+        requiredRole: judge
+
+resources:
+  - name: 庭审时间
+    type: finite
+    total: 480
+    distribution: competitive
+    description: 庭审时间（分钟），控辩双方争夺发言时间
+
+  - name: 证据
+    type: finite
+    total: 20
+    distribution: merit
+    description: 可提交的证据数量
+
+  - name: 证人传唤
+    type: finite
+    total: 6
+    distribution: competitive
+    description: 可传唤的证人数量
+
+evolution:
+  performanceWindow: 20
+  promotionThreshold: 80
+  demotionThreshold: 30
+  memoryRetention: 200
+  evolutionInterval: 604800000
+
+metadata:
+  caseType: 刑事案件
+  courtLevel: 中级人民法院
+  mission: "以事实为依据，以法律为准绳"

@@ -1,0 +1,55 @@
+{
+  "version": 1,
+  "unis": [
+    {
+      "id": "zhenhuan",
+      "name": "甄嬛传后宫",
+      "nameEn": "Legend of Zhen Huan",
+      "type": "competitive",
+      "agentCount": 7,
+      "difficulty": "intermediate",
+      "tags": ["chinese-drama", "palace", "intrigue"],
+      "language": "zh"
+    },
+    {
+      "id": "sanguo",
+      "name": "三国演义",
+      "nameEn": "Romance of the Three Kingdoms",
+      "type": "hybrid",
+      "agentCount": 8,
+      "difficulty": "advanced",
+      "tags": ["chinese-classic", "military", "alliance"],
+      "language": "zh"
+    },
+    {
+      "id": "startup",
+      "name": "创业公司",
+      "nameEn": "Startup Company",
+      "type": "hierarchical",
+      "agentCount": 7,
+      "difficulty": "beginner",
+      "tags": ["business", "tech", "team"],
+      "language": "zh"
+    },
+    {
+      "id": "courtroom",
+      "name": "法庭辩论",
+      "nameEn": "Courtroom Drama",
+      "type": "competitive",
+      "agentCount": 7,
+      "difficulty": "intermediate",
+      "tags": ["legal", "adversarial", "evidence"],
+      "language": "zh"
+    },
+    {
+      "id": "bigtech",
+      "name": "互联网大厂",
+      "nameEn": "Big Tech Corp",
+      "type": "hierarchical",
+      "agentCount": 7,
+      "difficulty": "intermediate",
+      "tags": ["corporate", "tech", "performance"],
+      "language": "zh"
+    }
+  ]
+}

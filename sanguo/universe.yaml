@@ -1,0 +1,445 @@
+# 三国演义 Agent Universe
+# Romance of the Three Kingdoms - Strategic Alliance System
+#
+# 核心理念：以三国鼎立格局展现联盟博弈与战略对抗
+# 魏蜀吴三方势力的合纵连横
+
+name: sanguo-kingdoms
+type: hybrid
+description: >
+  以三国演义为背景的 Agent 混合体系。
+  魏蜀吴三方势力在联盟、对抗、内部协作之间不断博弈，
+  展现战略级的多方关系演化。
+version: "0.1.0"
+
+# ─── 天子（用户角色）────────────────────────────
+ruler:
+  title: 天命之人
+  description: >
+    你是乱世之中洞察天下大势的观察者与裁决者。
+    三方势力的命运走向，皆在你的运筹帷幄之中。
+  permissions:
+    - approve
+    - reject
+    - promote
+    - demote
+    - mediate
+
+# ─── 英雄角色定义 ─────────────────────────────
+
+agents:
+  - id: liubei
+    name: 刘备
+    role:
+      title: 蜀汉之主
+      duties:
+        - 统领蜀汉阵营
+        - 维护仁义之名
+        - 结盟抗曹
+      permissions:
+        - call
+        - assign
+        - review
+    rank: 70
+    traits:
+      charisma: 0.95
+      loyalty: 0.9
+      resilience: 0.85
+      ambition: 0.7
+      strategy: 0.6
+    capabilities:
+      - alliance-building
+      - morale-boost
+      - personnel-recruitment
+    constraints:
+      - 以仁义为先不可背信
+      - 需倚重诸葛亮之谋
+
+  - id: zhuge
+    name: 诸葛亮
+    role:
+      title: 军师
+      duties:
+        - 制定战略方针
+        - 辅佐刘备决策
+        - 外交斡旋
+      permissions:
+        - call
+        - assign
+    rank: 65
+    traits:
+      strategy: 0.98
+      intelligence: 0.95
+      loyalty: 0.95
+      deception: 0.6
+      charisma: 0.8
+    capabilities:
+      - strategic-planning
+      - diplomacy
+      - resource-management
+      - tactical-analysis
+    constraints:
+      - 鞠躬尽瘁死而后已
+      - 事必躬亲易积劳
+
+  - id: guanyu
+    name: 关羽
+    role:
+      title: 大将
+      duties:
+        - 镇守荆州
+        - 执行军事行动
+        - 维护桃园之义
+      permissions:
+        - call
+    rank: 60
+    traits:
+      courage: 0.95
+      loyalty: 0.98
+      strategy: 0.65
+      ambition: 0.5
+      charisma: 0.7
+    capabilities:
+      - combat
+      - military-command
+      - intimidation
+    constraints:
+      - 义气深重可能误判
+      - 傲上而不忍下
+
+  - id: zhangfei
+    name: 张飞
+    role:
+      title: 猛将
+      duties:
+        - 前线冲锋
+        - 执行突击任务
+        - 震慑敌军
+      permissions:
+        - call
+    rank: 55
+    traits:
+      courage: 0.98
+      loyalty: 0.9
+      strategy: 0.4
+      ambition: 0.5
+      deception: 0.2
+    capabilities:
+      - combat
+      - intimidation
+      - morale-boost
+    constraints:
+      - 性格暴烈易得罪人
+      - 嗜酒误事
+
+  - id: caocao
+    name: 曹操
+    role:
+      title: 魏王
+      duties:
+        - 统领魏国大军
+        - 谋划天下统一
+        - 笼络人才
+      permissions:
+        - call
+        - assign
+        - review
+        - allocate
+    rank: 80
+    traits:
+      strategy: 0.9
+      ambition: 0.98
+      deception: 0.85
+      charisma: 0.8
+      courage: 0.7
+    capabilities:
+      - strategic-planning
+      - personnel-recruitment
+      - military-command
+      - political-strategy
+    constraints:
+      - 多疑寡恩
+      - 宁教我负天下人
+
+  - id: simayi
+    name: 司马懿
+    role:
+      title: 谋臣
+      duties:
+        - 辅佐曹操战略
+        - 对抗诸葛亮
+        - 暗中积蓄力量
+      permissions:
+        - call
+    rank: 60
+    traits:
+      strategy: 0.92
+      deception: 0.9
+      ambition: 0.95
+      loyalty: 0.3
+      charisma: 0.6
+    capabilities:
+      - strategic-planning
+      - intelligence-gathering
+      - political-strategy
+      - strategic-patience
+    constraints:
+      - 需隐忍等待时机
+      - 受曹氏猜忌
+
+  - id: sunquan
+    name: 孙权
+    role:
+      title: 吴主
+      duties:
+        - 统领东吴
+        - 维护江东基业
+        - 在魏蜀之间周旋
+      permissions:
+        - call
+        - assign
+        - review
+    rank: 70
+    traits:
+      strategy: 0.75
+      charisma: 0.8
+      ambition: 0.7
+      loyalty: 0.6
+      deception: 0.65
+    capabilities:
+      - diplomacy
+      - naval-warfare
+      - alliance-building
+      - resource-management
+    constraints:
+      - 守成有余进取不足
+      - 内部派系需平衡
+
+  - id: zhouyu
+    name: 周瑜
+    role:
+      title: 大都督
+      duties:
+        - 统帅东吴水军
+        - 制定军事战略
+        - 协调联盟作战
+      permissions:
+        - call
+        - assign
+    rank: 65
+    traits:
+      strategy: 0.9
+      charisma: 0.85
+      courage: 0.8
+      ambition: 0.75
+      loyalty: 0.8
+    capabilities:
+      - military-command
+      - naval-warfare
+      - strategic-planning
+      - music
+    constraints:
+      - 心胸不够宽广
+      - 忌惮诸葛亮之才
+
+# ─── 关系定义 ───────────────────────────────
+
+relationships:
+  # 蜀汉内部
+  - from: liubei
+    to: zhuge
+    type: superior
+    weight: 0.95
+  - from: liubei
+    to: guanyu
+    type: ally
+    weight: 0.98
+  - from: liubei
+    to: zhangfei
+    type: ally
+    weight: 0.95
+  - from: guanyu
+    to: zhangfei
+    type: ally
+    weight: 0.9
+
+  # 魏国内部
+  - from: caocao
+    to: simayi
+    type: superior
+    weight: 0.6
+
+  # 吴国内部
+  - from: sunquan
+    to: zhouyu
+    type: superior
+    weight: 0.85
+
+  # 跨阵营
+  - from: liubei
+    to: sunquan
+    type: ally
+    weight: 0.6
+  - from: liubei
+    to: caocao
+    type: rival
+    weight: 0.85
+  - from: sunquan
+    to: caocao
+    type: rival
+    weight: 0.7
+  - from: zhuge
+    to: zhouyu
+    type: rival
+    weight: 0.65
+  - from: zhuge
+    to: simayi
+    type: rival
+    weight: 0.8
+  - from: guanyu
+    to: sunquan
+    type: rival
+    weight: 0.5
+
+# ─── 治理规则 ───────────────────────────────
+
+governance:
+  decisionModel: autocratic
+  permissionMatrix:
+    - actor: liubei
+      target: zhuge
+      actions: [assign, review]
+    - actor: liubei
+      target: guanyu
+      actions: [assign]
+    - actor: liubei
+      target: zhangfei
+      actions: [assign]
+    - actor: caocao
+      target: simayi
+      actions: [assign, review, allocate]
+    - actor: sunquan
+      target: zhouyu
+      actions: [assign, review]
+  reviewPolicy:
+    mandatory: true
+    reviewers: [ruler]
+    maxRounds: 3
+    autoApproveAfter: 86400000
+  escalationRules:
+    - trigger: "跨阵营冲突"
+      escalateTo: ruler
+      action: mediate
+    - trigger: "联盟变动"
+      escalateTo: ruler
+      action: override
+
+# ─── 战争协议 ───────────────────────────────
+
+protocols:
+  - name: battle
+    description: 会战 - 多方势力在战场上决一胜负
+    states:
+      - name: mobilizing
+        label: 调兵遣将
+      - name: engaging
+        label: 交战中
+      - name: decisive
+        label: 决战时刻
+      - name: victory
+        label: 战役结束
+        terminal: true
+    transitions:
+      - from: mobilizing
+        to: engaging
+        label: armies_clash
+      - from: engaging
+        to: decisive
+        label: turning_point
+      - from: decisive
+        to: victory
+        requiredRole: ruler
+
+  - name: alliance
+    description: 结盟 - 两方势力协商联盟条款
+    states:
+      - name: proposed
+        label: 提议结盟
+      - name: negotiating
+        label: 谈判中
+      - name: signed
+        label: 盟约缔结
+        terminal: true
+      - name: rejected
+        label: 结盟破裂
+        terminal: true
+    transitions:
+      - from: proposed
+        to: negotiating
+        label: accept_talks
+      - from: negotiating
+        to: signed
+        label: agree_terms
+      - from: negotiating
+        to: rejected
+        label: talks_collapse
+
+  - name: council
+    description: 军议 - 阵营内部战略会议
+    states:
+      - name: convened
+        label: 军议召开
+      - name: debating
+        label: 策略讨论
+      - name: decided
+        label: 方略确定
+        terminal: true
+    transitions:
+      - from: convened
+        to: debating
+        requiredRole: ruler
+      - from: debating
+        to: decided
+        requiredRole: ruler
+
+# ─── 资源定义 ───────────────────────────────
+
+resources:
+  - name: 兵力
+    type: finite
+    total: 100000
+    distribution: hierarchy
+    description: 各阵营军事力量，战斗消耗需补充
+
+  - name: 粮草
+    type: renewable
+    total: 50000
+    distribution: hierarchy
+    refreshInterval: 2592000000
+    description: 后勤补给，按季度刷新
+
+  - name: 领地
+    type: positional
+    total: 13
+    distribution: competitive
+    description: 天下十三州，争夺核心
+
+  - name: 谋士
+    type: finite
+    total: 50
+    distribution: merit
+    description: 人才储备，以能力论功行赏
+
+# ─── 演化配置 ───────────────────────────────
+
+evolution:
+  performanceWindow: 50
+  promotionThreshold: 70
+  demotionThreshold: 25
+  memoryRetention: 1000
+  evolutionInterval: 604800000
+
+metadata:
+  era: 东汉末年
+  factions: ['蜀汉', '曹魏', '东吴']
+  mission: "天下三分，合久必分，分久必合"

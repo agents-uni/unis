@@ -1,0 +1,26 @@
+{
+  "name": "@agents-uni/unis",
+  "version": "0.1.0",
+  "description": "Curated universe templates for agents-uni",
+  "type": "module",
+  "files": [
+    "*/universe.yaml",
+    "*/rel-demo.mjs",
+    "*/README.md",
+    "registry.json",
+    "CONTRIBUTING.md",
+    "README.md"
+  ],
+  "keywords": [
+    "agents-uni",
+    "universe-templates",
+    "multi-agent",
+    "scenarios"
+  ],
+  "author": "agents-uni",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/agents-uni/unis.git"
+  }
+}

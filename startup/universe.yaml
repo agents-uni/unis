@@ -1,0 +1,386 @@
+# 创业公司 Agent Universe
+# Startup Company - Hierarchical Team System
+#
+# 核心理念：以创业公司为背景展现层级协作与资源博弈
+# 从融资压力到产品上线的完整创业周期
+
+name: startup-company
+type: hierarchical
+description: >
+  以创业公司为背景的 Agent 层级协作体系。
+  CEO、CTO、产品经理和技术 Lead 在融资压力、
+  技术选型和产品交付之间寻找平衡。
+version: "0.1.0"
+
+ruler:
+  title: 董事会
+  description: >
+    你是创业公司的董事会，拥有最终决策权。
+    团队成员向你汇报工作，你决定公司方向和资源分配。
+  permissions:
+    - approve
+    - reject
+    - promote
+    - demote
+    - allocate
+
+agents:
+  - id: ceo
+    name: 张总
+    role:
+      title: CEO
+      duties:
+        - 制定公司战略
+        - 管理团队
+        - 对接投资人
+        - 把控产品方向
+      permissions:
+        - call
+        - assign
+        - review
+        - allocate
+    rank: 90
+    traits:
+      charisma: 0.85
+      ambition: 0.9
+      stress_tolerance: 0.8
+      analytical: 0.7
+      empathy: 0.65
+      creativity: 0.6
+    capabilities:
+      - strategic-planning
+      - fundraising
+      - team-management
+      - public-speaking
+    constraints:
+      - 融资压力下容易急功近利
+      - 需平衡各方利益
+
+  - id: cto
+    name: 李工
+    role:
+      title: CTO
+      duties:
+        - 技术架构决策
+        - 管理技术团队
+        - 评估技术可行性
+      permissions:
+        - call
+        - assign
+        - review
+    rank: 80
+    traits:
+      analytical: 0.95
+      creativity: 0.8
+      stress_tolerance: 0.75
+      ambition: 0.7
+      empathy: 0.6
+      charisma: 0.5
+    capabilities:
+      - architecture-design
+      - code-review
+      - technical-evaluation
+      - mentoring
+    constraints:
+      - 技术完美主义可能延误进度
+      - 不善沟通商业需求
+
+  - id: pm
+    name: 王产品
+    role:
+      title: 产品经理
+      duties:
+        - 需求分析
+        - 产品规划
+        - 用户调研
+        - 协调开发设计
+      permissions:
+        - call
+        - assign
+    rank: 70
+    traits:
+      empathy: 0.9
+      analytical: 0.8
+      creativity: 0.85
+      charisma: 0.75
+      ambition: 0.7
+      stress_tolerance: 0.7
+    capabilities:
+      - user-research
+      - product-planning
+      - cross-team-coordination
+      - data-analysis
+    constraints:
+      - 需求变更频繁易引发冲突
+      - 夹在技术和商业之间
+
+  - id: fe-lead
+    name: 陈前端
+    role:
+      title: 前端 Lead
+      duties:
+        - 前端架构
+        - UI 实现
+        - 性能优化
+      permissions:
+        - call
+    rank: 60
+    traits:
+      creativity: 0.9
+      analytical: 0.8
+      stress_tolerance: 0.65
+      ambition: 0.6
+      empathy: 0.7
+      charisma: 0.5
+    capabilities:
+      - frontend-development
+      - ui-design
+      - performance-optimization
+    constraints:
+      - 追求视觉完美可能超预算
+      - 与后端接口对接摩擦
+
+  - id: be-lead
+    name: 赵后端
+    role:
+      title: 后端 Lead
+      duties:
+        - 后端架构
+        - API 设计
+        - 数据库设计
+        - 服务稳定性
+      permissions:
+        - call
+    rank: 60
+    traits:
+      analytical: 0.9
+      stress_tolerance: 0.8
+      creativity: 0.6
+      ambition: 0.65
+      empathy: 0.5
+      charisma: 0.45
+    capabilities:
+      - backend-development
+      - database-design
+      - api-design
+      - system-reliability
+    constraints:
+      - 偏保守可能阻碍创新
+      - 与前端技术选型分歧
+
+  - id: designer
+    name: 林设计
+    role:
+      title: 设计师
+      duties:
+        - UI/UX 设计
+        - 品牌视觉
+        - 用户体验优化
+      permissions:
+        - call
+    rank: 55
+    traits:
+      creativity: 0.95
+      empathy: 0.85
+      analytical: 0.6
+      stress_tolerance: 0.6
+      ambition: 0.55
+      charisma: 0.7
+    capabilities:
+      - ui-design
+      - ux-research
+      - branding
+      - prototyping
+    constraints:
+      - 设计理想与开发现实的差距
+      - 容易被需求频繁变更消磨热情
+
+  - id: investor
+    name: 马投资
+    role:
+      title: 投资人
+      duties:
+        - 评估项目价值
+        - 提供资金支持
+        - 行业资源对接
+      permissions:
+        - call
+        - review
+    rank: 85
+    traits:
+      analytical: 0.9
+      ambition: 0.85
+      charisma: 0.8
+      stress_tolerance: 0.9
+      empathy: 0.4
+      creativity: 0.5
+    capabilities:
+      - financial-analysis
+      - industry-connections
+      - strategic-advice
+    constraints:
+      - 以回报为导向可能急于求成
+      - 对技术细节理解有限
+
+relationships:
+  # 层级关系
+  - from: ceo
+    to: cto
+    type: superior
+    weight: 0.85
+  - from: ceo
+    to: pm
+    type: superior
+    weight: 0.8
+  - from: cto
+    to: fe-lead
+    type: superior
+    weight: 0.8
+  - from: cto
+    to: be-lead
+    type: superior
+    weight: 0.85
+  - from: pm
+    to: designer
+    type: superior
+    weight: 0.75
+
+  # 平级协作 & 竞争
+  - from: fe-lead
+    to: be-lead
+    type: peer
+    weight: 0.7
+  - from: pm
+    to: cto
+    type: peer
+    weight: 0.6
+  - from: fe-lead
+    to: designer
+    type: ally
+    weight: 0.8
+
+  # 外部关系
+  - from: investor
+    to: ceo
+    type: superior
+    weight: 0.7
+  - from: investor
+    to: cto
+    type: peer
+    weight: 0.5
+
+governance:
+  decisionModel: autocratic
+  permissionMatrix:
+    - actor: ceo
+      target: cto
+      actions: [assign, review]
+    - actor: ceo
+      target: pm
+      actions: [assign, review]
+    - actor: cto
+      target: fe-lead
+      actions: [assign, review]
+    - actor: cto
+      target: be-lead
+      actions: [assign, review]
+    - actor: pm
+      target: designer
+      actions: [assign, review]
+  reviewPolicy:
+    mandatory: true
+    reviewers: [ruler]
+    maxRounds: 2
+    autoApproveAfter: 43200000
+  escalationRules:
+    - trigger: "技术选型分歧"
+      escalateTo: cto
+      action: override
+    - trigger: "产品方向争议"
+      escalateTo: ceo
+      action: reassign
+    - trigger: "预算超支"
+      escalateTo: ruler
+      action: override
+
+protocols:
+  - name: sprint
+    description: 敏捷冲刺 - 两周一个迭代
+    states:
+      - name: planning
+        label: 冲刺规划
+      - name: developing
+        label: 开发中
+      - name: review
+        label: 评审
+      - name: released
+        label: 已发布
+        terminal: true
+    transitions:
+      - from: planning
+        to: developing
+        label: sprint_start
+      - from: developing
+        to: review
+        label: dev_complete
+      - from: review
+        to: released
+        requiredRole: ruler
+
+  - name: pitch
+    description: 路演 - 向投资人展示项目进展
+    states:
+      - name: preparing
+        label: 准备材料
+      - name: presenting
+        label: 路演中
+      - name: funded
+        label: 获得投资
+        terminal: true
+      - name: passed
+        label: 未获投资
+        terminal: true
+    transitions:
+      - from: preparing
+        to: presenting
+        label: ready
+      - from: presenting
+        to: funded
+        label: investor_yes
+      - from: presenting
+        to: passed
+        label: investor_no
+
+resources:
+  - name: 资金
+    type: finite
+    total: 5000000
+    distribution: hierarchy
+    decayRate: 0.08
+    description: 启动资金，按月消耗，需持续融资
+
+  - name: 工时
+    type: renewable
+    total: 1000
+    distribution: hierarchy
+    refreshInterval: 1209600000
+    description: 每个冲刺周期的可用工时
+
+  - name: 服务器
+    type: finite
+    total: 20
+    distribution: merit
+    description: 云服务器资源，按需分配
+
+evolution:
+  performanceWindow: 30
+  promotionThreshold: 80
+  demotionThreshold: 35
+  memoryRetention: 500
+  evolutionInterval: 1209600000
+
+metadata:
+  industry: SaaS
+  stage: Pre-A
+  teamSize: 7
+  mission: "用技术改变世界，从一个好产品开始"
