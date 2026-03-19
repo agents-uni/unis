@@ -4,9 +4,11 @@
 [![npm version](https://img.shields.io/npm/v/@agents-uni/unis.svg)](https://www.npmjs.com/package/@agents-uni/unis)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
-Curated universe templates for [agents-uni](https://github.com/agents-uni) — ready-to-play scenarios with agents, relationships, and storylines.
+Curated universe templates for [agents-uni](https://github.com/agents-uni) — ready-to-play agent scenarios with relationships, storylines, and governance rules.
 
-每个 uni 是一个独立可运行的目录，`cp -r zhenhuan/ my-project/` 就能用。
+> **注意**：这是一个**模板仓库**，不是一个可以直接 clone & run 的项目。
+> `rel-demo.mjs` 依赖 `@agents-uni/rel`，需要在你自己的项目中安装后才能运行。
+> 推荐通过 `uni init --uni <name>` 使用模板（会自动处理依赖）。
 
 ## 宇宙索引
 
@@ -18,28 +20,59 @@ Curated universe templates for [agents-uni](https://github.com/agents-uni) — r
 | `courtroom` | 法庭辩论 | competitive | 7 | intermediate | 对抗式博弈、证据攻防、程序正义 |
 | `bigtech` | 互联网大厂 | hierarchical | 7 | intermediate | 绩效考核、晋升竞争、组织政治 |
 
-## 快速体验
+## 使用方式
+
+### 推荐：通过 CLI 初始化项目
 
 ```bash
-# 1. 验证宇宙定义
-cd zhenhuan && uni validate universe.yaml
+# 1. 用模板创建项目（自动复制 universe.yaml + rel-demo.mjs）
+uni init my-project --uni zhenhuan
+cd my-project
 
-# 2. 可视化关系图
+# 2. 安装依赖（包含 @agents-uni/rel）
+npm install
+
+# 3. 验证 & 体验
+uni validate universe.yaml
 uni visualize universe.yaml
-
-# 3. 运行关系演化演示
 node rel-demo.mjs
 ```
 
-## 用模板初始化项目
+### 手动使用
+
+如果你想直接从仓库复制模板：
 
 ```bash
-uni init my-project --uni zhenhuan
-cd my-project
-npm install
+# 1. 复制模板文件到你的项目
+cp zhenhuan/universe.yaml zhenhuan/rel-demo.mjs your-project/
+
+# 2. 在你的项目中安装依赖
+cd your-project
+npm install @agents-uni/rel
+
+# 3. 验证 & 运行
 uni validate universe.yaml
 node rel-demo.mjs
 ```
+
+### 仅浏览 / 验证
+
+`universe.yaml` 是纯 YAML，无需安装任何依赖即可验证和查看：
+
+```bash
+cd zhenhuan
+uni validate universe.yaml
+uni visualize universe.yaml
+```
+
+## npm 包的作用
+
+`@agents-uni/unis` 发布为 npm 包，但**不是给用户直接安装的**。它服务于：
+
+- **`uni init --uni <name>`** — CLI 通过 `require.resolve` 定位模板文件并复制到用户项目
+- **`@agents-uni/zhenhuan`** — 作为 fallback 源查找 `universe.yaml`
+
+如果你只是想浏览模板，直接看这个 Git 仓库即可。
 
 ## 贡献你的 Uni
 
@@ -54,10 +87,10 @@ agents-uni-unis/
 ├── registry.json         # 机器可读索引
 ├── package.json
 │
-├── zhenhuan/             # 每个 uni = 独立目录
-│   ├── universe.yaml
-│   ├── rel-demo.mjs
-│   └── README.md
+├── zhenhuan/             # 每个 uni = 模板目录
+│   ├── universe.yaml     #   宇宙定义（纯 YAML，可独立验证）
+│   ├── rel-demo.mjs      #   关系演化演示（需 @agents-uni/rel）
+│   └── README.md         #   设计意图说明
 ├── sanguo/
 ├── startup/
 ├── courtroom/
