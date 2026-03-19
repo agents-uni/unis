@@ -1,5 +1,9 @@
 # @agents-uni/unis
 
+[![CI](https://github.com/agents-uni/unis/actions/workflows/ci.yml/badge.svg)](https://github.com/agents-uni/unis/actions/workflows/ci.yml)
+[![npm version](https://img.shields.io/npm/v/@agents-uni/unis.svg)](https://www.npmjs.com/package/@agents-uni/unis)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+
 Curated universe templates for [agents-uni](https://github.com/agents-uni) — ready-to-play scenarios with agents, relationships, and storylines.
 
 每个 uni 是一个独立可运行的目录，`cp -r zhenhuan/ my-project/` 就能用。
