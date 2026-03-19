@@ -1,0 +1,35 @@
+name: CI
+
+on:
+  push:
+    branches: [master]
+  pull_request:
+    branches: [master]
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Verify registry.json is valid JSON
+        run: node -e "JSON.parse(require('fs').readFileSync('registry.json','utf-8'))"
+
+      - name: Verify all unis have required files
+        run: |
+          for uni in $(node -e "const r=JSON.parse(require('fs').readFileSync('registry.json','utf-8'));r.unis.forEach(u=>console.log(u.id))"); do
+            echo "Checking $uni..."
+            test -f "$uni/universe.yaml" || { echo "Missing $uni/universe.yaml"; exit 1; }
+            test -f "$uni/rel-demo.mjs" || { echo "Missing $uni/rel-demo.mjs"; exit 1; }
+            test -f "$uni/README.md" || { echo "Missing $uni/README.md"; exit 1; }
+            echo "  ✓ $uni OK"
+          done
+
+      - name: Verify registry uni count matches directories
+        run: |
+          registry_count=$(node -e "const r=JSON.parse(require('fs').readFileSync('registry.json','utf-8'));console.log(r.unis.length)")
+          dir_count=$(ls -d */universe.yaml 2>/dev/null | wc -l | tr -d ' ')
+          echo "Registry: $registry_count unis, Directories: $dir_count"
+          test "$registry_count" = "$dir_count" || { echo "Mismatch!"; exit 1; }
+          echo "✓ Counts match"
