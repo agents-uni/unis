@@ -329,7 +329,7 @@ governance:
   escalationRules:
     - trigger: "跨阵营冲突"
       escalateTo: ruler
-      action: mediate
+      action: reassign
     - trigger: "联盟变动"
       escalateTo: ruler
       action: override
