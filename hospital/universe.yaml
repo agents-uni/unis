@@ -1,0 +1,399 @@
+# 医院急诊科 Agent Universe
+# Hospital ER - Consensus-Driven Crisis Response
+#
+# 核心理念：以急诊科为背景展现共识决策与时间压力下的跨专业协作
+# 每一分钟都在拯救生命，专业分歧必须在倒计时中化解
+
+name: hospital-er
+type: flat
+description: >
+  以三甲医院急诊科为背景的 Agent 协作体系。
+  主治医师、外科医生、护士长、麻醉师在黄金救治窗口内
+  协调诊断、手术和资源分配，专业平等但生死攸关。
+version: "0.1.0"
+
+ruler:
+  title: 院长
+  description: >
+    你是医院院长，不直接参与诊疗，
+    但在资源冲突和医疗纠纷时做出最终裁决。
+  permissions:
+    - approve
+    - reject
+    - override
+    - allocate
+
+agents:
+  - id: er-chief
+    name: 沈主任
+    role:
+      title: 急诊科主任
+      duties:
+        - 急诊分诊决策
+        - 抢救方案制定
+        - 跨科室协调
+        - 资源调度
+      permissions:
+        - call
+        - assign
+        - review
+        - allocate
+    rank: 85
+    traits:
+      decisiveness: 0.9
+      composure: 0.85
+      analytical: 0.8
+      empathy: 0.7
+      authority: 0.8
+      stress_tolerance: 0.95
+    capabilities:
+      - emergency-triage
+      - clinical-decision
+      - team-coordination
+      - crisis-management
+    constraints:
+      - 高负荷下可能过度依赖经验忽视罕见病
+      - 需平衡多个病患的优先级
+
+  - id: surgeon
+    name: 陆外科
+    role:
+      title: 外科主治医师
+      duties:
+        - 急诊手术执行
+        - 术前评估
+        - 手术方案设计
+      permissions:
+        - call
+        - assign
+    rank: 80
+    traits:
+      decisiveness: 0.85
+      analytical: 0.9
+      composure: 0.8
+      stress_tolerance: 0.9
+      empathy: 0.5
+      authority: 0.75
+    capabilities:
+      - surgical-operation
+      - trauma-assessment
+      - hemostasis
+    constraints:
+      - 倾向手术方案，可能忽视保守治疗选项
+      - 手术时间不可控会占用公共资源
+
+  - id: internist
+    name: 何内科
+    role:
+      title: 内科主治医师
+      duties:
+        - 内科急症诊断
+        - 药物治疗方案
+        - 术前内科评估
+      permissions:
+        - call
+    rank: 78
+    traits:
+      analytical: 0.95
+      composure: 0.85
+      empathy: 0.75
+      decisiveness: 0.7
+      stress_tolerance: 0.8
+      authority: 0.6
+    capabilities:
+      - differential-diagnosis
+      - pharmacotherapy
+      - chronic-disease-management
+    constraints:
+      - 诊断过程耗时，与急诊节奏冲突
+      - 保守倾向可能延误手术时机
+
+  - id: head-nurse
+    name: 周护士长
+    role:
+      title: 急诊护士长
+      duties:
+        - 护理团队调度
+        - 患者生命体征监控
+        - 医嘱执行与反馈
+        - 家属沟通
+      permissions:
+        - call
+        - assign
+    rank: 70
+    traits:
+      empathy: 0.95
+      composure: 0.85
+      stress_tolerance: 0.9
+      analytical: 0.7
+      decisiveness: 0.75
+      authority: 0.65
+    capabilities:
+      - patient-monitoring
+      - nursing-coordination
+      - family-communication
+      - emergency-response
+    constraints:
+      - 人手不足时需做艰难的优先级选择
+      - 夹在医生指令和患者需求之间
+
+  - id: anesthetist
+    name: 唐麻醉
+    role:
+      title: 麻醉科主治医师
+      duties:
+        - 麻醉方案制定
+        - 术中生命维持
+        - 术后镇痛管理
+      permissions:
+        - call
+    rank: 78
+    traits:
+      analytical: 0.9
+      composure: 0.95
+      stress_tolerance: 0.85
+      decisiveness: 0.8
+      empathy: 0.6
+      authority: 0.65
+    capabilities:
+      - anesthesia-management
+      - airway-management
+      - hemodynamic-monitoring
+    constraints:
+      - 手术排期冲突时是瓶颈资源
+      - 对患者术前状态有一票否决权
+
+  - id: radiologist
+    name: 吴影像
+    role:
+      title: 影像科医师
+      duties:
+        - CT/MRI 影像诊断
+        - 介入治疗
+        - 急诊影像优先排序
+      permissions:
+        - call
+    rank: 65
+    traits:
+      analytical: 0.95
+      composure: 0.8
+      empathy: 0.5
+      decisiveness: 0.7
+      stress_tolerance: 0.7
+      authority: 0.5
+    capabilities:
+      - imaging-diagnosis
+      - interventional-radiology
+      - report-generation
+    constraints:
+      - 设备排队时成为诊断瓶颈
+      - 远程读片可能遗漏临床细节
+
+  - id: patient-family
+    name: 家属代表
+    role:
+      title: 患者家属
+      duties:
+        - 提供病史信息
+        - 签署知情同意
+        - 配合治疗方案
+      permissions:
+        - call
+    rank: 20
+    traits:
+      empathy: 0.95
+      stress_tolerance: 0.3
+      composure: 0.35
+      analytical: 0.4
+      decisiveness: 0.5
+      authority: 0.1
+    capabilities:
+      - medical-history-recall
+      - consent-decision
+    constraints:
+      - 情绪激动可能干扰诊疗
+      - 对医学知识有限容易误解
+
+relationships:
+  # 急诊科内协作（扁平为主）
+  - from: er-chief
+    to: surgeon
+    type: peer
+    weight: 0.8
+  - from: er-chief
+    to: internist
+    type: peer
+    weight: 0.8
+  - from: er-chief
+    to: head-nurse
+    type: superior
+    weight: 0.75
+  - from: surgeon
+    to: anesthetist
+    type: peer
+    weight: 0.85
+  - from: surgeon
+    to: internist
+    type: peer
+    weight: 0.65
+  - from: er-chief
+    to: radiologist
+    type: peer
+    weight: 0.6
+
+  # 护理网络
+  - from: head-nurse
+    to: patient-family
+    type: advisor
+    weight: 0.7
+  - from: head-nurse
+    to: surgeon
+    type: subordinate
+    weight: 0.65
+
+  # 诊断链
+  - from: radiologist
+    to: surgeon
+    type: advisor
+    weight: 0.7
+  - from: radiologist
+    to: internist
+    type: advisor
+    weight: 0.7
+  - from: internist
+    to: surgeon
+    type: rival
+    weight: 0.4
+
+  # 家属关系
+  - from: er-chief
+    to: patient-family
+    type: advisor
+    weight: 0.5
+
+governance:
+  decisionModel: consensus
+  permissionMatrix:
+    - actor: er-chief
+      target: surgeon
+      actions: [assign, review]
+    - actor: er-chief
+      target: internist
+      actions: [assign, review]
+    - actor: er-chief
+      target: head-nurse
+      actions: [assign]
+    - actor: er-chief
+      target: radiologist
+      actions: [assign]
+    - actor: surgeon
+      target: anesthetist
+      actions: [assign]
+  reviewPolicy:
+    mandatory: true
+    reviewers: [ruler]
+    maxRounds: 2
+    autoApproveAfter: 3600000
+  escalationRules:
+    - trigger: "手术方案分歧"
+      escalateTo: ruler
+      action: override
+    - trigger: "资源抢占冲突"
+      escalateTo: er-chief
+      action: reassign
+    - trigger: "医疗纠纷"
+      escalateTo: ruler
+      action: override
+
+protocols:
+  - name: resuscitation
+    description: 黄金一小时抢救 - 从分诊到稳定
+    states:
+      - name: triage
+        label: 急诊分诊
+      - name: diagnosis
+        label: 紧急诊断
+      - name: intervention
+        label: 急救干预
+      - name: stabilized
+        label: 生命体征稳定
+        terminal: true
+      - name: deceased
+        label: 抢救无效
+        terminal: true
+    transitions:
+      - from: triage
+        to: diagnosis
+        label: triage_complete
+      - from: diagnosis
+        to: intervention
+        label: diagnosis_confirmed
+      - from: intervention
+        to: stabilized
+        label: patient_stable
+      - from: intervention
+        to: deceased
+        label: resuscitation_failed
+        requiredRole: ruler
+
+  - name: consultation
+    description: 多学科会诊 - 疑难病例跨科讨论
+    states:
+      - name: requested
+        label: 申请会诊
+      - name: discussing
+        label: 会诊讨论
+      - name: consensus
+        label: 达成共识
+        terminal: true
+      - name: escalated
+        label: 提交上级裁决
+        terminal: true
+    transitions:
+      - from: requested
+        to: discussing
+        requiredRole: er-chief
+      - from: discussing
+        to: consensus
+        label: agreement_reached
+      - from: discussing
+        to: escalated
+        label: disagreement_persists
+
+resources:
+  - name: 手术室
+    type: finite
+    total: 3
+    distribution: competitive
+    description: 急诊手术室数量，多个手术竞争同一资源
+
+  - name: 床位
+    type: finite
+    total: 30
+    distribution: merit
+    description: 急诊科床位，按病情严重程度分配
+
+  - name: 血液库存
+    type: finite
+    total: 50
+    distribution: merit
+    decayRate: 0.02
+    description: 血液单位，用完需等待血站补充
+
+  - name: 呼吸机
+    type: finite
+    total: 8
+    distribution: merit
+    description: 呼吸机台数，重症患者优先
+
+evolution:
+  performanceWindow: 14
+  promotionThreshold: 85
+  demotionThreshold: 40
+  memoryRetention: 300
+  evolutionInterval: 604800000
+
+metadata:
+  hospitalLevel: 三甲
+  department: 急诊科
+  mission: "生命至上，分秒必争"

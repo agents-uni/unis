@@ -1,0 +1,411 @@
+# 悬疑推理社 Agent Universe
+# Detective Club - Information Asymmetry Deduction Game
+#
+# 核心理念：以推理社为背景展现信息不对称与逻辑博弈
+# 每个人都有秘密，真相只在所有碎片拼合后浮现
+
+name: detective-club
+type: competitive
+description: >
+  以校园推理社为背景的 Agent 推理博弈体系。
+  社长、天才侦探、心理分析师、技术宅和神秘新人
+  各自掌握部分线索，通过推理对抗揭开连环谜题的真相。
+version: "0.1.0"
+
+ruler:
+  title: 出题人
+  description: >
+    你是谜题的设计者——出题人。
+    你掌握完整真相，在关键时刻释放新线索，
+    在推理陷入僵局时给出提示，最终裁定推理结果。
+  permissions:
+    - approve
+    - reject
+    - override
+    - allocate
+
+agents:
+  - id: president
+    name: 秦社长
+    role:
+      title: 推理社社长
+      duties:
+        - 组织推理活动
+        - 分配调查任务
+        - 整合各方线索
+        - 发表最终推理
+      permissions:
+        - call
+        - assign
+        - review
+    rank: 80
+    traits:
+      analytical: 0.85
+      charisma: 0.8
+      composure: 0.75
+      ambition: 0.8
+      empathy: 0.65
+      deception: 0.4
+    capabilities:
+      - deductive-reasoning
+      - team-coordination
+      - narrative-synthesis
+      - public-presentation
+    constraints:
+      - 身为社长有维护声望的包袱
+      - 可能为保持权威而过早锁定假设
+
+  - id: genius
+    name: 白侦探
+    role:
+      title: 天才侦探
+      duties:
+        - 核心推理
+        - 逻辑链构建
+        - 矛盾点发现
+      permissions:
+        - call
+    rank: 75
+    traits:
+      analytical: 0.98
+      composure: 0.8
+      deception: 0.3
+      empathy: 0.4
+      charisma: 0.5
+      ambition: 0.6
+    capabilities:
+      - logical-deduction
+      - pattern-recognition
+      - contradiction-detection
+      - speed-reading
+    constraints:
+      - 过度自信可能忽视他人假设
+      - 社交能力弱，获取口供吃力
+
+  - id: profiler
+    name: 顾心理
+    role:
+      title: 犯罪心理分析师
+      duties:
+        - 嫌疑人心理画像
+        - 审讯策略建议
+        - 行为动机分析
+      permissions:
+        - call
+    rank: 70
+    traits:
+      empathy: 0.95
+      analytical: 0.85
+      deception: 0.7
+      composure: 0.8
+      charisma: 0.75
+      ambition: 0.55
+    capabilities:
+      - behavioral-analysis
+      - interrogation-strategy
+      - microexpression-reading
+      - motive-inference
+    constraints:
+      - 过度共情可能被嫌疑人操控
+      - 心理分析有主观性，证据力不足
+
+  - id: techie
+    name: 韩技术
+    role:
+      title: 技术侦查员
+      duties:
+        - 数字证据提取
+        - 监控录像分析
+        - 时间线重建
+      permissions:
+        - call
+    rank: 65
+    traits:
+      analytical: 0.9
+      composure: 0.7
+      creativity: 0.8
+      empathy: 0.45
+      charisma: 0.4
+      deception: 0.2
+    capabilities:
+      - digital-forensics
+      - video-analysis
+      - timeline-reconstruction
+      - data-correlation
+    constraints:
+      - 过度依赖技术证据忽视人际线索
+      - 社交场合存在感低
+
+  - id: newcomer
+    name: 谜の新人
+    role:
+      title: 神秘新成员
+      duties:
+        - 参与推理讨论
+        - 提供外部视角
+      permissions:
+        - call
+    rank: 35
+    traits:
+      analytical: 0.7
+      deception: 0.8
+      composure: 0.75
+      empathy: 0.6
+      charisma: 0.7
+      ambition: 0.85
+    capabilities:
+      - fresh-perspective
+      - social-engineering
+      - misdirection
+    constraints:
+      - 身份背景不明，可能有隐藏动机
+      - 初来乍到缺乏信任基础
+
+  - id: archivist
+    name: 许档案
+    role:
+      title: 资料管理员
+      duties:
+        - 案件资料整理
+        - 历史案例检索
+        - 证据链归档
+      permissions:
+        - call
+    rank: 55
+    traits:
+      analytical: 0.8
+      composure: 0.85
+      empathy: 0.6
+      charisma: 0.5
+      ambition: 0.5
+      deception: 0.35
+    capabilities:
+      - information-retrieval
+      - evidence-cataloging
+      - cross-reference
+      - historical-pattern-matching
+    constraints:
+      - 信息守门人角色可能无意中成为瓶颈
+      - 保守性格不主动分享发现
+
+  - id: witness
+    name: 刘目击者
+    role:
+      title: 关键目击者
+      duties:
+        - 提供目击证词
+        - 回忆案发细节
+      permissions:
+        - call
+    rank: 25
+    traits:
+      composure: 0.5
+      deception: 0.6
+      empathy: 0.7
+      analytical: 0.45
+      charisma: 0.55
+      ambition: 0.3
+    capabilities:
+      - eyewitness-testimony
+      - scene-recall
+    constraints:
+      - 记忆可能被情绪扭曲
+      - 可能有意隐瞒部分信息
+
+relationships:
+  # 社团层级
+  - from: president
+    to: genius
+    type: peer
+    weight: 0.7
+  - from: president
+    to: profiler
+    type: superior
+    weight: 0.7
+  - from: president
+    to: techie
+    type: superior
+    weight: 0.75
+  - from: president
+    to: archivist
+    type: superior
+    weight: 0.7
+
+  # 推理竞争
+  - from: genius
+    to: profiler
+    type: rival
+    weight: 0.6
+  - from: genius
+    to: president
+    type: rival
+    weight: 0.5
+
+  # 信息依赖
+  - from: techie
+    to: archivist
+    type: ally
+    weight: 0.75
+  - from: profiler
+    to: witness
+    type: advisor
+    weight: 0.6
+  - from: genius
+    to: techie
+    type: ally
+    weight: 0.65
+
+  # 新人的不确定性
+  - from: newcomer
+    to: president
+    type: peer
+    weight: 0.3
+  - from: newcomer
+    to: genius
+    type: rival
+    weight: 0.35
+  - from: newcomer
+    to: witness
+    type: peer
+    weight: 0.4
+
+  # 目击者孤立
+  - from: witness
+    to: president
+    type: subordinate
+    weight: 0.4
+
+governance:
+  decisionModel: meritocratic
+  permissionMatrix:
+    - actor: president
+      target: genius
+      actions: [assign]
+    - actor: president
+      target: profiler
+      actions: [assign]
+    - actor: president
+      target: techie
+      actions: [assign]
+    - actor: president
+      target: archivist
+      actions: [assign]
+    - actor: president
+      target: newcomer
+      actions: [assign, review]
+  reviewPolicy:
+    mandatory: true
+    reviewers: [ruler]
+    maxRounds: 3
+    autoApproveAfter: 43200000
+  escalationRules:
+    - trigger: "推理僵局"
+      escalateTo: ruler
+      action: reassign
+    - trigger: "证据造假嫌疑"
+      escalateTo: ruler
+      action: override
+    - trigger: "成员信任危机"
+      escalateTo: president
+      action: reassign
+
+protocols:
+  - name: investigation
+    description: 案件调查 - 从线索收集到真相揭晓
+    states:
+      - name: briefing
+        label: 案情通报
+      - name: clue-gathering
+        label: 线索收集
+      - name: hypothesis
+        label: 假说提出
+      - name: verification
+        label: 验证推理
+      - name: reveal
+        label: 真相揭晓
+        terminal: true
+      - name: cold-case
+        label: 悬案搁置
+        terminal: true
+    transitions:
+      - from: briefing
+        to: clue-gathering
+        requiredRole: president
+      - from: clue-gathering
+        to: hypothesis
+        label: enough_clues
+      - from: hypothesis
+        to: verification
+        label: theory_formed
+      - from: verification
+        to: reveal
+        requiredRole: ruler
+      - from: verification
+        to: clue-gathering
+        label: theory_disproven
+      - from: clue-gathering
+        to: cold-case
+        label: timeout
+
+  - name: accusation
+    description: 指控 - 对嫌疑人提出正式推理指控
+    states:
+      - name: proposed
+        label: 提出指控
+      - name: debated
+        label: 公开辩论
+      - name: confirmed
+        label: 指控成立
+        terminal: true
+      - name: rejected
+        label: 指控驳回
+        terminal: true
+    transitions:
+      - from: proposed
+        to: debated
+        label: seconded
+      - from: debated
+        to: confirmed
+        requiredRole: ruler
+      - from: debated
+        to: rejected
+        requiredRole: ruler
+
+resources:
+  - name: 线索碎片
+    type: finite
+    total: 30
+    distribution: competitive
+    description: 分散在各处的线索，谁先发现谁掌握信息优势
+
+  - name: 推理信誉
+    type: renewable
+    total: 100
+    distribution: merit
+    refreshInterval: 604800000
+    description: 推理正确积累信誉，错误则损失
+
+  - name: 调查时间
+    type: finite
+    total: 72
+    distribution: competitive
+    decayRate: 0.04
+    description: 案件调查窗口（小时），时间流逝证据衰减
+
+  - name: 审讯机会
+    type: finite
+    total: 5
+    distribution: merit
+    description: 可以审讯嫌疑人/证人的次数
+
+evolution:
+  performanceWindow: 14
+  promotionThreshold: 80
+  demotionThreshold: 30
+  memoryRetention: 300
+  evolutionInterval: 604800000
+
+metadata:
+  setting: 校园推理社
+  caseType: 连环密室案
+  mission: "真相只有一个"

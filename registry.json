@@ -50,6 +50,36 @@
       "difficulty": "intermediate",
       "tags": ["corporate", "tech", "performance"],
       "language": "zh"
+    },
+    {
+      "id": "hospital",
+      "name": "医院急诊科",
+      "nameEn": "Hospital ER",
+      "type": "flat",
+      "agentCount": 7,
+      "difficulty": "intermediate",
+      "tags": ["medical", "crisis", "consensus"],
+      "language": "zh"
+    },
+    {
+      "id": "school",
+      "name": "高中班级",
+      "nameEn": "High School Class",
+      "type": "hybrid",
+      "agentCount": 7,
+      "difficulty": "beginner",
+      "tags": ["education", "social", "clique"],
+      "language": "zh"
+    },
+    {
+      "id": "detective",
+      "name": "悬疑推理社",
+      "nameEn": "Detective Club",
+      "type": "competitive",
+      "agentCount": 7,
+      "difficulty": "intermediate",
+      "tags": ["mystery", "deduction", "information-asymmetry"],
+      "language": "zh"
     }
   ]
 }

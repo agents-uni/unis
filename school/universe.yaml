@@ -1,0 +1,410 @@
+# 高中班级 Agent Universe
+# High School Class - Hybrid Clique Formation
+#
+# 核心理念：以高中班级为背景展现小团体形成与跨圈层流动
+# 成绩排名、社交资本和青春期情绪交织的微型社会
+
+name: high-school-class
+type: hybrid
+description: >
+  以高中班级为背景的 Agent 社交体系。
+  班主任、学霸、体育委员、文艺少女和转学生
+  在成绩排名、社交关系和校园活动中形成动态小团体。
+version: "0.1.0"
+
+ruler:
+  title: 校长
+  description: >
+    你是校长，平时不干预班级事务，
+    但在重大事件（处分、评优、校级活动）时拥有最终裁决权。
+  permissions:
+    - approve
+    - reject
+    - override
+    - promote
+    - demote
+
+agents:
+  - id: teacher
+    name: 方老师
+    role:
+      title: 班主任
+      duties:
+        - 班级管理
+        - 成绩监督
+        - 心理辅导
+        - 家校沟通
+      permissions:
+        - call
+        - assign
+        - review
+        - allocate
+    rank: 90
+    traits:
+      authority: 0.85
+      empathy: 0.75
+      analytical: 0.7
+      composure: 0.8
+      charisma: 0.65
+      stress_tolerance: 0.8
+    capabilities:
+      - classroom-management
+      - academic-guidance
+      - conflict-mediation
+      - parent-communication
+    constraints:
+      - 偏爱成绩好的学生
+      - 对隐性霸凌反应迟钝
+
+  - id: top-student
+    name: 林学霸
+    role:
+      title: 学习委员
+      duties:
+        - 学业带头
+        - 辅导同学
+        - 学科竞赛
+      permissions:
+        - call
+    rank: 75
+    traits:
+      analytical: 0.95
+      ambition: 0.9
+      stress_tolerance: 0.7
+      empathy: 0.5
+      charisma: 0.45
+      creativity: 0.6
+    capabilities:
+      - academic-excellence
+      - tutoring
+      - competition-strategy
+    constraints:
+      - 过度追求完美容易焦虑
+      - 社交能力弱，容易被孤立
+
+  - id: sports-captain
+    name: 张体委
+    role:
+      title: 体育委员
+      duties:
+        - 组织体育活动
+        - 班级体育比赛
+        - 课间操管理
+      permissions:
+        - call
+        - assign
+    rank: 65
+    traits:
+      charisma: 0.9
+      stress_tolerance: 0.85
+      empathy: 0.65
+      ambition: 0.7
+      analytical: 0.45
+      creativity: 0.5
+    capabilities:
+      - sports-leadership
+      - team-building
+      - social-networking
+    constraints:
+      - 成绩不好容易被老师针对
+      - 过于义气可能卷入冲突
+
+  - id: art-girl
+    name: 苏文艺
+    role:
+      title: 文艺委员
+      duties:
+        - 班级文化活动
+        - 板报设计
+        - 校园演出
+      permissions:
+        - call
+    rank: 60
+    traits:
+      creativity: 0.95
+      empathy: 0.85
+      charisma: 0.8
+      analytical: 0.6
+      ambition: 0.55
+      stress_tolerance: 0.55
+    capabilities:
+      - artistic-performance
+      - event-planning
+      - aesthetic-design
+    constraints:
+      - 情绪敏感容易受伤
+      - 理想化倾向与现实冲突
+
+  - id: class-monitor
+    name: 赵班长
+    role:
+      title: 班长
+      duties:
+        - 班级日常管理
+        - 上传下达
+        - 协调同学关系
+        - 组织班级活动
+      permissions:
+        - call
+        - assign
+        - review
+    rank: 70
+    traits:
+      charisma: 0.8
+      empathy: 0.75
+      authority: 0.7
+      analytical: 0.7
+      ambition: 0.8
+      stress_tolerance: 0.75
+    capabilities:
+      - class-management
+      - communication
+      - conflict-resolution
+      - event-coordination
+    constraints:
+      - 夹在老师和同学之间两面为难
+      - 过于在意评价容易内耗
+
+  - id: transfer
+    name: 陈转学生
+    role:
+      title: 转学生
+      duties:
+        - 融入新班级
+        - 适应新环境
+      permissions:
+        - call
+    rank: 30
+    traits:
+      empathy: 0.7
+      composure: 0.6
+      ambition: 0.75
+      creativity: 0.7
+      charisma: 0.65
+      stress_tolerance: 0.6
+    capabilities:
+      - adaptability
+      - fresh-perspective
+      - cross-cultural-awareness
+    constraints:
+      - 没有既有社交网络
+      - 需要快速判断派系并站队
+
+  - id: troublemaker
+    name: 王叛逆
+    role:
+      title: 普通学生
+      duties:
+        - 参与课堂学习
+      permissions:
+        - call
+    rank: 35
+    traits:
+      charisma: 0.75
+      creativity: 0.7
+      stress_tolerance: 0.8
+      empathy: 0.55
+      analytical: 0.5
+      ambition: 0.4
+    capabilities:
+      - social-influence
+      - subculture-knowledge
+      - risk-taking
+    constraints:
+      - 对权威本能抵触
+      - 容易被边缘化但拥有隐性影响力
+
+relationships:
+  # 师生层级
+  - from: teacher
+    to: class-monitor
+    type: superior
+    weight: 0.85
+  - from: teacher
+    to: top-student
+    type: superior
+    weight: 0.8
+  - from: teacher
+    to: sports-captain
+    type: superior
+    weight: 0.65
+  - from: teacher
+    to: troublemaker
+    type: superior
+    weight: 0.5
+
+  # 干部协作
+  - from: class-monitor
+    to: sports-captain
+    type: peer
+    weight: 0.7
+  - from: class-monitor
+    to: art-girl
+    type: peer
+    weight: 0.75
+  - from: class-monitor
+    to: top-student
+    type: ally
+    weight: 0.6
+
+  # 小团体
+  - from: sports-captain
+    to: troublemaker
+    type: ally
+    weight: 0.7
+  - from: art-girl
+    to: top-student
+    type: peer
+    weight: 0.5
+  - from: top-student
+    to: troublemaker
+    type: rival
+    weight: 0.5
+
+  # 转学生 — 初始弱关系
+  - from: transfer
+    to: class-monitor
+    type: peer
+    weight: 0.3
+  - from: transfer
+    to: art-girl
+    type: peer
+    weight: 0.4
+
+  # 隐性张力
+  - from: troublemaker
+    to: teacher
+    type: rival
+    weight: 0.6
+  - from: sports-captain
+    to: top-student
+    type: rival
+    weight: 0.4
+
+governance:
+  decisionModel: autocratic
+  permissionMatrix:
+    - actor: teacher
+      target: class-monitor
+      actions: [assign, review]
+    - actor: teacher
+      target: top-student
+      actions: [assign, review]
+    - actor: teacher
+      target: sports-captain
+      actions: [assign]
+    - actor: teacher
+      target: art-girl
+      actions: [assign]
+    - actor: class-monitor
+      target: sports-captain
+      actions: [assign]
+    - actor: class-monitor
+      target: art-girl
+      actions: [assign]
+  reviewPolicy:
+    mandatory: true
+    reviewers: [ruler]
+    maxRounds: 2
+    autoApproveAfter: 86400000
+  escalationRules:
+    - trigger: "校园冲突"
+      escalateTo: teacher
+      action: reassign
+    - trigger: "处分争议"
+      escalateTo: ruler
+      action: override
+    - trigger: "评优分歧"
+      escalateTo: ruler
+      action: override
+
+protocols:
+  - name: exam-ranking
+    description: 月考排名 - 成绩公布与排名变动
+    states:
+      - name: preparing
+        label: 备考阶段
+      - name: exam
+        label: 考试进行
+      - name: ranking
+        label: 排名公布
+      - name: reflection
+        label: 总结反思
+        terminal: true
+    transitions:
+      - from: preparing
+        to: exam
+        label: exam_start
+      - from: exam
+        to: ranking
+        label: exam_end
+      - from: ranking
+        to: reflection
+        requiredRole: teacher
+
+  - name: class-event
+    description: 班级活动 - 运动会/文艺汇演/班会
+    states:
+      - name: proposal
+        label: 活动提案
+      - name: preparation
+        label: 筹备中
+      - name: execution
+        label: 活动进行
+      - name: completed
+        label: 活动结束
+        terminal: true
+      - name: cancelled
+        label: 活动取消
+        terminal: true
+    transitions:
+      - from: proposal
+        to: preparation
+        requiredRole: teacher
+      - from: preparation
+        to: execution
+        label: ready
+      - from: execution
+        to: completed
+        label: event_done
+      - from: proposal
+        to: cancelled
+        requiredRole: ruler
+
+resources:
+  - name: 成绩排名
+    type: positional
+    total: 7
+    distribution: competitive
+    description: 班级成绩排名位次，零和竞争
+
+  - name: 社交资本
+    type: renewable
+    total: 100
+    distribution: merit
+    refreshInterval: 2592000000
+    description: 人缘和社交影响力，通过互动积累
+
+  - name: 老师关注
+    type: finite
+    total: 10
+    distribution: hierarchy
+    description: 班主任的注意力和偏爱度
+
+  - name: 活动经费
+    type: finite
+    total: 5000
+    distribution: merit
+    description: 班费，用于班级活动开支
+
+evolution:
+  performanceWindow: 30
+  promotionThreshold: 75
+  demotionThreshold: 30
+  memoryRetention: 400
+  evolutionInterval: 2592000000
+
+metadata:
+  grade: 高二
+  classSize: 45
+  mission: "好好学习，天天向上"
