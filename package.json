@@ -19,6 +19,7 @@
   ],
   "author": "agents-uni",
   "license": "MIT",
+  "homepage": "https://agents-uni.github.io",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/agents-uni/unis.git"
